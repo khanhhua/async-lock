@@ -10,7 +10,7 @@
     "build": "babel -d ./dist ./lib",
     "test:lib": "mocha --require babel-core/register --ui bdd test/**.spec.js",
     "test": "NODE_ENV=production mocha --require babel-core/register --ui bdd test/**.spec.js",
-    "pretest": "npm build"
+    "pretest": "npm run-script build"
   },
   "keywords": [
     "semaphore"
