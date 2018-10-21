@@ -7,7 +7,7 @@
     "node": ">=8.11"
   },
   "scripts": {
-    "test": "mocha test/**.spec.js"
+    "test": "mocha --require babel-core/register --ui bdd test/**.spec.js"
   },
   "keywords": [
     "semaphore"
@@ -22,6 +22,7 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
-    "caller-id": "^0.1.0"
+    "caller-id": "^0.1.0",
+    "debug": "^4.1.0"
   }
 }
