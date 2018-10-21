@@ -33,17 +33,21 @@ describe('AsyncLock', () => {
 
   it('should lock code section per module:line scope', async () => {
     let sharedVar = 0;
+    let entrances = [];
 
     async function sequence1(nth) {
       const release = await lock();
-      await new Promise(resolve => setTimeout(resolve, 100));
 
+      entrances.push(nth);
+      await new Promise(resolve => setTimeout(resolve, 100));
       sharedVar = nth;
       release();
       return nth;
     }
     async function sequence2(nth) {
       const release = await lock();
+
+      entrances.push(nth);
       await new Promise(resolve => setTimeout(resolve, 10));
 
       sharedVar = nth;
@@ -60,5 +64,6 @@ describe('AsyncLock', () => {
 
     // As sequence1 finishes later (200ms), sharedVar is always 2
     expect(sharedVar).to.be.equal(2);
+    expect(entrances).to.be.deep.equal([1,'a','b',2]);
   });
 });
