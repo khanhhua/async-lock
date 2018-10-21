@@ -56,14 +56,20 @@ describe('AsyncLock', () => {
     }
 
     await Promise.all([
-      sequence1(1),
-      sequence1(2),
-      sequence2('a'),
-      sequence2('b'),
+      Promise.all([
+        sequence1(1),
+        sequence1(2),
+        sequence2('a'),
+        sequence2('b'),
+      ]),
+      Promise.all([
+        sequence2('c'),
+        sequence2('d'),
+      ]),
     ]);
 
     // As sequence1 finishes later (200ms), sharedVar is always 2
     expect(sharedVar).to.be.equal(2);
-    expect(entrances).to.be.deep.equal([1,'a','b',2]);
+    expect(entrances).to.be.deep.equal([1,'a','b','c','d',2]);
   });
 });
