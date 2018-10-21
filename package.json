@@ -2,12 +2,15 @@
   "name": "async-lock",
   "version": "0.0.1",
   "description": "Async lock is a semaphore for Node",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=8.11"
   },
   "scripts": {
-    "test": "mocha --require babel-core/register --ui bdd test/**.spec.js"
+    "build": "babel -d ./dist ./lib",
+    "test:lib": "mocha --require babel-core/register --ui bdd test/**.spec.js",
+    "test": "NODE_ENV=production mocha --require babel-core/register --ui bdd test/**.spec.js",
+    "pretest": "npm build"
   },
   "keywords": [
     "semaphore"

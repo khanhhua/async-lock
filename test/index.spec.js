@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import lock from '../lib';
+const { expect } = require('chai');
+const { default: lock } = require(process.env.NODE_ENV === 'production' ? '../dist' : '../lib');
 
 describe('AsyncLock', () => {
   it('should be a function that returns a release function', async () => {
