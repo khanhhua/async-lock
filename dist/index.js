@@ -29,21 +29,14 @@ exports.default = async function lock() {
   let instance;
 
   if (id in locks) {
-    instance = new Lock(locks[id]);
+    instance = new Lock(id, locks[id]);
     await locks[id].promise;
   } else {
-    instance = new Lock();
+    instance = new Lock(id);
     locks[id] = instance;
-    instance.promise.then(() => {
-      // Release the lock reference
-      dbg(`Freeing the lock id ${id}`);
-      locks[id] = null;
-      delete locks[id];
-    });
   }
 
   return () => {
-    dbg(`Releasing the kraken ${id}`);
     instance.release();
   };
 };
@@ -62,15 +55,39 @@ class Lock {
    *
    * @param dependency {Lock}
    */
-  constructor(dependency = null) {
+  constructor(id, dependency = null) {
+    this.id = null;
+    this.refCount = 0;
+    this.rootDependency = null;
+
+    const rootDependency = dependency ? dependency.rootDependency || dependency : null;
+    if (rootDependency) {
+      this.rootDependency = rootDependency;
+      rootDependency.refCount += 1;
+    }
+
+    this.id = id;
     this.release = () => {
-      console.log('Cannot release yet');
+      console.warn('Cannot release yet');
     };
     this.promise = new Promise(async resolve => {
       if (dependency) {
         await dependency.promise;
       }
-      this.release = resolve;
+      this.release = () => {
+        dbg(`Release the lock id ${id}`);
+        resolve();
+
+        if (rootDependency) {
+          rootDependency.refCount -= 1;
+          if (rootDependency.refCount === 0) {
+            dbg(`Freeing the lock id ${id}`);
+
+            locks[id] = undefined;
+            delete locks[id];
+          }
+        }
+      };
     });
   }
 }
