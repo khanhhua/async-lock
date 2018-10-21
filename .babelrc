@@ -1,0 +1,20 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ],
+  "ignore": "node_modules/*",
+  "env": {
+    "test": {
+      "plugins": [ "istanbul", {
+        "exclude": [
+          "**/*.spec.js",
+          "**/*.test.js"
+        ]
+      }]
+    }
+  }
+}
