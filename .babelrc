@@ -7,6 +7,9 @@
     }]
   ],
   "ignore": "node_modules/*",
+  "plugins": [
+    "transform-class-properties"
+  ],
   "env": {
     "test": {
       "plugins": [ "istanbul", {
