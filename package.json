@@ -22,7 +22,7 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
-    "caller-id": "^0.1.0",
-    "debug": "^4.1.0"
+    "debug": "^4.1.0",
+    "stack-trace": "0.0.10"
   }
 }
