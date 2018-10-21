@@ -4,7 +4,7 @@
   "description": "Async lock is a semaphore for Node",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=8.11"
+    "node": ">=6"
   },
   "scripts": {
     "build": "babel -d ./dist ./lib",
